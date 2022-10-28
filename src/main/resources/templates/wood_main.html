@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Пиломатериалы</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+
+        <li class="nav-item">
+          <a class="nav-link" href="/">Главная</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link active" href="/wood_main">Калькулятор</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/manufacturer">Производители</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/type">Виды</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/price">Цены</a>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+<table class="table table-info">
+  <thead>
+  <tr>
+    <th scope="col">id</th>
+    <th scope="col">Порода</th>
+    <th scope="col">Производитель</th>
+<!--    <th scope="col" width="150">Поставщик</th>-->
+    <th scope="col">Длина, м</th>
+    <th scope="col">Ширина, мм</th>
+    <th scope="col">Высота, мм</th>
+    <th scope="col">Кол-во, шт</th>
+    <th scope="col">Объем, м3</th>
+    <th scope="col">Кол-во в 1м3</th>
+    <th scope="col">Цена за 1м3, грн</th>
+    <th scope="col">Стоимость, грн</th>
+
+    <th scope="col">Изменить</th>
+    <th scope="col">Удалить</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="el : ${wood}">
+    <td th:text="${el.id}"></td>
+    <td th:text="${el.type.type}"></td>
+    <td th:text="${el.manufacturer.name}"></td>
+    <td th:text="${el.length}"></td>
+    <td th:text="${el.width}"></td>
+    <td th:text="${el.height}"></td>
+    <td th:text="${el.quantity}"></td>
+    <td th:text="${el.value}"></td>
+    <td th:text="${el.quantityVal}"></td>
+    <td th:text="${el.price.price}"></td>
+    <td th:text="${el.cost}"></td>
+
+    <td><a th:href="@{/wood_edit/{id}(id=${el.id})}">Изменить</a></td>
+    <td><a th:href="@{/wood_delete/{id}(id=${el.id})}">Удалить</a></td>
+  </tr>
+  </tbody>
+</table>
+<div th:text="'Общая сумма: ' + ${sum} + ' грн'" class="table table-info"></div>
+      <form action="add_wood" method="post" class="container mt-5 mb-5">
+          <table class="table table-info">
+            <thead>
+            <tr>
+              <th scope="col">Порода</th>
+              <th scope="col">Производитель</th>
+              <th scope="col">Длина, м</th>
+              <th scope="col">Ширина, мм</th>
+              <th scope="col">Высота, мм</th>
+              <th scope="col">Кол-во</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>
+                  <select id="type" name="type" class="form-control">
+                    <option  th:each="el : ${types}" th:text="${el.type}"  th:value="${el.type}"></option>
+                  </select>
+              </td>
+              <td>
+                  <select id="name" name="name" class="form-control">
+                    <option th:each="l : ${manufacturers}" th:text="${l.name}" th:value="${l.name}" ></option>
+                  </select>
+              </td>
+              <td><input type="number" name="length" placeholder="Длина"  id="length" class="form-control"></td>
+              <td><input type="number" name="width" placeholder="Ширмна"  id="width" class="form-control"></td>
+              <td><input type="number" name="height" placeholder="Высота"  id="height" class="form-control"></td>
+              <td><input type="number" name="quantity" placeholder="Кол-во"  id="quantity" class="form-control"></td>
+              <td><input type="submit" value="Добавить" class="btn btn-success"></td>
+            </tr>
+            </tbody>
+          </table>
+      </form>
+</body>
+</html>
